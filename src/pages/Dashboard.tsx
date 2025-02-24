@@ -1,9 +1,29 @@
 
 import { motion } from "framer-motion";
-import { Users, Briefcase, Link as LinkIcon, Plus } from "lucide-react";
+import { Users, Briefcase, Link as LinkIcon, Plus, X } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+
+interface Job {
+  id: number;
+  title: string;
+  department: string;
+  applicants: number;
+  status: string;
+}
 
 const Dashboard = () => {
-  const openPositions = [
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [jobForm, setJobForm] = useState({
+    title: "",
+    department: "",
+    description: "",
+    requirements: "",
+    location: "",
+    type: "full-time",
+  });
+
+  const [openPositions, setOpenPositions] = useState<Job[]>([
     {
       id: 1,
       title: "Senior Frontend Developer",
@@ -18,7 +38,30 @@ const Dashboard = () => {
       applicants: 8,
       status: "active",
     },
-  ];
+  ]);
+
+  const handleJobSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newJob = {
+      id: openPositions.length + 1,
+      title: jobForm.title,
+      department: jobForm.department,
+      applicants: 0,
+      status: "active",
+    };
+    
+    setOpenPositions([...openPositions, newJob]);
+    setIsDialogOpen(false);
+    setJobForm({
+      title: "",
+      department: "",
+      description: "",
+      requirements: "",
+      location: "",
+      type: "full-time",
+    });
+    toast.success("Job posted successfully!");
+  };
 
   const generateApplicationLink = (jobId: number) => {
     // In a real app, this would generate a unique application link
@@ -30,12 +73,141 @@ const Dashboard = () => {
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-lg border-b border-primary-200">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <h1 className="font-display text-2xl font-bold text-primary-900">Zenith</h1>
-          <button className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2">
+          <button
+            onClick={() => setIsDialogOpen(true)}
+            className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2"
+          >
             <Plus className="w-4 h-4" />
             Post New Job
           </button>
         </div>
       </nav>
+
+      {/* Job Posting Dialog */}
+      {isDialogOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-lg w-full max-w-2xl mx-4 overflow-hidden"
+          >
+            <div className="p-6 border-b border-primary-100 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-primary-900">Post New Job</h2>
+              <button
+                onClick={() => setIsDialogOpen(false)}
+                className="text-primary-400 hover:text-primary-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleJobSubmit} className="p-6 space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-primary-700" htmlFor="title">
+                  Job Title
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  value={jobForm.title}
+                  onChange={(e) => setJobForm({ ...jobForm, title: e.target.value })}
+                  className="w-full px-4 py-2 rounded-lg border border-primary-200 focus:outline-none focus:ring-2 focus:ring-accent"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-primary-700" htmlFor="department">
+                  Department
+                </label>
+                <input
+                  type="text"
+                  id="department"
+                  value={jobForm.department}
+                  onChange={(e) => setJobForm({ ...jobForm, department: e.target.value })}
+                  className="w-full px-4 py-2 rounded-lg border border-primary-200 focus:outline-none focus:ring-2 focus:ring-accent"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-primary-700" htmlFor="description">
+                  Job Description
+                </label>
+                <textarea
+                  id="description"
+                  value={jobForm.description}
+                  onChange={(e) => setJobForm({ ...jobForm, description: e.target.value })}
+                  className="w-full px-4 py-2 rounded-lg border border-primary-200 focus:outline-none focus:ring-2 focus:ring-accent min-h-[100px]"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-primary-700" htmlFor="requirements">
+                  Requirements
+                </label>
+                <textarea
+                  id="requirements"
+                  value={jobForm.requirements}
+                  onChange={(e) => setJobForm({ ...jobForm, requirements: e.target.value })}
+                  className="w-full px-4 py-2 rounded-lg border border-primary-200 focus:outline-none focus:ring-2 focus:ring-accent min-h-[100px]"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-primary-700" htmlFor="location">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    id="location"
+                    value={jobForm.location}
+                    onChange={(e) => setJobForm({ ...jobForm, location: e.target.value })}
+                    className="w-full px-4 py-2 rounded-lg border border-primary-200 focus:outline-none focus:ring-2 focus:ring-accent"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-primary-700" htmlFor="type">
+                    Job Type
+                  </label>
+                  <select
+                    id="type"
+                    value={jobForm.type}
+                    onChange={(e) => setJobForm({ ...jobForm, type: e.target.value })}
+                    className="w-full px-4 py-2 rounded-lg border border-primary-200 focus:outline-none focus:ring-2 focus:ring-accent"
+                    required
+                  >
+                    <option value="full-time">Full Time</option>
+                    <option value="part-time">Part Time</option>
+                    <option value="contract">Contract</option>
+                    <option value="internship">Internship</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={() => setIsDialogOpen(false)}
+                  className="px-4 py-2 text-primary-600 hover:text-primary-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors"
+                >
+                  Post Job
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
 
       <main className="container mx-auto px-4 pt-32">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
