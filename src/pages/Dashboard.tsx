@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Users, Briefcase, Link as LinkIcon, Plus, X } from "lucide-react";
 import { useState } from "react";
@@ -64,8 +63,7 @@ const Dashboard = () => {
   };
 
   const generateApplicationLink = (jobId: number) => {
-    // In a real app, this would generate a unique application link
-    return `https://yourdomain.com/apply/${jobId}`;
+    return `${window.location.origin}/apply/${jobId}`;
   };
 
   return (

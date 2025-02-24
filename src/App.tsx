@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Setup from "./pages/Setup";
 import Dashboard from "./pages/Dashboard";
+import Apply from "./pages/Apply";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/setup" element={<Setup />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/apply/:jobId" element={<Apply />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
