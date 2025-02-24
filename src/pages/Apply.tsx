@@ -1,11 +1,11 @@
-
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "sonner";
 
 const Apply = () => {
   const { jobId } = useParams();
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -28,6 +28,14 @@ const Apply = () => {
     e.preventDefault();
     // Here you would typically send the application to your backend
     toast.success("Application submitted successfully!");
+    
+    // Navigate to the interview page with the applicant's name and job title
+    navigate(`/interview/${jobId}`, {
+      state: {
+        fullName: form.fullName,
+        jobTitle: jobDetails.title,
+      },
+    });
   };
 
   return (

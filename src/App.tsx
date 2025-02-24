@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Setup from "./pages/Setup";
 import Dashboard from "./pages/Dashboard";
 import Apply from "./pages/Apply";
+import Interview from "./pages/Interview";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/setup" element={<Setup />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/apply/:jobId" element={<Apply />} />
+          <Route path="/interview/:jobId" element={<Interview />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
