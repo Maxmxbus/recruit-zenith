@@ -1,8 +1,11 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, BriefcaseIcon, Users, Building } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-primary-50 to-primary-100">
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-lg border-b border-primary-200">
@@ -15,7 +18,10 @@ const Index = () => {
             <a href="#solutions" className="text-primary-600 hover:text-primary-800 transition-colors">
               Solutions
             </a>
-            <button className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors">
+            <button 
+              onClick={() => navigate("/setup")}
+              className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors"
+            >
               Get Started
             </button>
           </div>
