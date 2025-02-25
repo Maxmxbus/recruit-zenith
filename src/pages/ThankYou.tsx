@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Check, Send } from "lucide-react";
 import { useLocation } from "react-router-dom";
@@ -143,15 +144,9 @@ const ThankYou = () => {
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-sm text-primary-500 mb-4">
+            <p className="text-sm text-primary-500">
               A confirmation email has been sent to your registered email address.
             </p>
-            <a
-              href="/"
-              className="inline-block px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors"
-            >
-              Return to Homepage
-            </a>
           </div>
         </motion.div>
       </main>
