@@ -1,7 +1,7 @@
-
 import { motion } from "framer-motion";
 import { Check, Send } from "lucide-react";
-import { useLocation, useState } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface ThankYouState {
