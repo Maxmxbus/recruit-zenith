@@ -9,6 +9,7 @@ import Setup from "./pages/Setup";
 import Dashboard from "./pages/Dashboard";
 import Apply from "./pages/Apply";
 import Interview from "./pages/Interview";
+import ThankYou from "./pages/ThankYou";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/apply/:jobId" element={<Apply />} />
           <Route path="/interview/:jobId" element={<Interview />} />
+          <Route path="/thank-you" element={<ThankYou />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

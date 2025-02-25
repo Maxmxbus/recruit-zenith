@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Send } from "lucide-react";
 
@@ -12,7 +12,9 @@ interface InterviewState {
 const Interview = () => {
   const { jobId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const interviewState = location.state as InterviewState;
+  const [questionCount, setQuestionCount] = useState(0);
 
   const [messages, setMessages] = useState([
     {
@@ -31,16 +33,37 @@ const Interview = () => {
     setMessages((prev) => [...prev, userMessage]);
     setCurrentMessage("");
     setIsLoading(true);
+    setQuestionCount((prev) => prev + 1);
 
     // Simulate AI response - in a real app, this would call your AI endpoint
     setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: "Thank you for your response. Here's another question related to your experience...",
-        },
-      ]);
+      if (questionCount >= 4) {
+        // After 5 questions (including initial greeting), end the interview
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: "Thank you for your time! We've completed the initial interview process.",
+          },
+        ]);
+        // Navigate to thank you page after a short delay
+        setTimeout(() => {
+          navigate("/thank-you", {
+            state: {
+              fullName: interviewState?.fullName,
+              jobTitle: interviewState?.jobTitle,
+            },
+          });
+        }, 2000);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: "Thank you for your response. Here's another question related to your experience...",
+          },
+        ]);
+      }
       setIsLoading(false);
     }, 1000);
   };
