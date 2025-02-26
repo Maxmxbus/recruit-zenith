@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Building, Upload, ArrowRight } from "lucide-react";
+import { Building, ArrowRight } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Setup = () => {
   const navigate = useNavigate();
@@ -14,12 +16,36 @@ const Setup = () => {
     values: "",
     trainingData: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send this data to your backend
-    // For now, we'll just navigate to the dashboard
-    navigate("/dashboard");
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('Companies')
+        .insert([
+          {
+            company_name: formData.companyName,
+            industry: formData.industry,
+            compan_size: parseInt(formData.companySize), // Convert string to number
+            company_description: formData.description,
+            company_values: formData.values,
+            training_data: formData.trainingData,
+          }
+        ]);
+
+      if (error) throw error;
+
+      toast.success("Company profile created successfully!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error('Error creating company:', error);
+      toast.error("Failed to create company profile. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -108,11 +134,11 @@ const Setup = () => {
                   required
                 >
                   <option value="">Select company size</option>
-                  <option value="1-10">1-10 employees</option>
-                  <option value="11-50">11-50 employees</option>
-                  <option value="51-200">51-200 employees</option>
-                  <option value="201-500">201-500 employees</option>
-                  <option value="501+">501+ employees</option>
+                  <option value="10">1-10 employees</option>
+                  <option value="50">11-50 employees</option>
+                  <option value="200">51-200 employees</option>
+                  <option value="500">201-500 employees</option>
+                  <option value="1000">501+ employees</option>
                 </select>
               </div>
 
@@ -163,10 +189,17 @@ const Setup = () => {
 
             <button
               type="submit"
-              className="w-full px-8 py-3 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors flex items-center justify-center gap-2"
+              disabled={isSubmitting}
+              className="w-full px-8 py-3 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Continue to Dashboard
-              <ArrowRight className="w-4 h-4" />
+              {isSubmitting ? (
+                "Creating Profile..."
+              ) : (
+                <>
+                  Continue to Dashboard
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
             </button>
           </form>
         </motion.div>
