@@ -11,6 +11,8 @@ import Apply from "./pages/Apply";
 import Interview from "./pages/Interview";
 import ThankYou from "./pages/ThankYou";
 import NotFound from "./pages/NotFound";
+import Features from "./pages/Features";
+import Solutions from "./pages/Solutions";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ const App = () => (
           <Route path="/apply/:jobId" element={<Apply />} />
           <Route path="/interview/:jobId" element={<Interview />} />
           <Route path="/thank-you" element={<ThankYou />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/solutions" element={<Solutions />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

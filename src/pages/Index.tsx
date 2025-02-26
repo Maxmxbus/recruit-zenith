@@ -12,12 +12,18 @@ const Index = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <h1 className="font-display text-2xl font-bold text-primary-900">Zenith</h1>
           <div className="flex items-center gap-8">
-            <a href="#features" className="text-primary-600 hover:text-primary-800 transition-colors">
+            <button 
+              onClick={() => navigate("/features")} 
+              className="text-primary-600 hover:text-primary-800 transition-colors"
+            >
               Features
-            </a>
-            <a href="#solutions" className="text-primary-600 hover:text-primary-800 transition-colors">
+            </button>
+            <button 
+              onClick={() => navigate("/solutions")} 
+              className="text-primary-600 hover:text-primary-800 transition-colors"
+            >
               Solutions
-            </a>
+            </button>
             <button 
               onClick={() => navigate("/setup")}
               className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors"
@@ -53,7 +59,10 @@ const Index = () => {
               Get Started
               <ArrowRight className="w-4 h-4" />
             </button>
-            <button className="px-8 py-3 bg-white text-primary-900 rounded-lg hover:bg-primary-50 transition-colors">
+            <button 
+              onClick={() => navigate("/features")}
+              className="px-8 py-3 bg-white text-primary-900 rounded-lg hover:bg-primary-50 transition-colors"
+            >
               Learn More
             </button>
           </div>
